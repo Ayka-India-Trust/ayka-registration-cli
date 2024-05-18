@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as p from "@clack/prompts";
-import { AykaRegistration } from "./lib/registration";
+import { AykaRegistration } from "./registration/registration";
 import figlet from "figlet";
 import chalk from "chalk";
 

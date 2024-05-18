@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { RegisterSchema } from "../schema";
-import { db } from "./db";
+import { RegisterSchema } from "./schema";
+import { db } from "../utils/db";
 import bcrypt from "bcrypt";
-import { generatePasswordFunction } from "./password";
+import { generatePasswordFunction } from "../utils/password";
 
 export async function AykaRegistration(values: z.infer<typeof RegisterSchema>) {
   const validatedFields = RegisterSchema.safeParse(values);
