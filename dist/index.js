@@ -38,9 +38,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.main = void 0;
 const p = __importStar(require("@clack/prompts"));
-const registration_1 = require("./lib/registration");
+const registration_1 = require("./registration/registration");
 const figlet_1 = __importDefault(require("figlet"));
 const chalk_1 = __importDefault(require("chalk"));
+const adminPasskey = process.env.ADMIN_PASSKEY;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         p.intro(chalk_1.default.red(figlet_1.default.textSync("Ayka", { horizontalLayout: "full" })));
@@ -51,7 +52,7 @@ function main() {
         const admin = yield p.password({
             message: "Enter the admin passkey?",
             validate(value) {
-                if (value !== "100")
+                if (value !== adminPasskey)
                     return `Incorrect passkey, please try again.`;
             },
         });
@@ -89,16 +90,19 @@ function main() {
             email,
         });
         if (Output.success) {
-            s.stop(chalk_1.default.green(Output.success) +
-                " " +
-                chalk_1.default.green(`Your account has been created successfully. Please find your credentials below:`) +
-                chalk_1.default.green(`\nEmail: ${email}\nPassword: ${Output.data.password}`) +
-                chalk_1.default.yellow(`\nProcess of sending emails has not been implemented yet.`));
-            p.outro(chalk_1.default.green("Account created successfully!"));
+            s.stop(chalk_1.default.green(Output.success));
+            p.outro(chalk_1.default.bgGreen("Account created successfully!"));
+            p.text({
+                message: chalk_1.default.bgGreen(`Email: ${Output.data.email}, Password: ${Output.data.password}`),
+            });
+            p.outro(chalk_1.default.yellow(`\nProcess of sending emails has not been implemented yet.`));
             process.exit(0);
         }
         if (Output.error) {
-            s.stop(chalk_1.default.red(Output.error) + " " + chalk_1.default.yellow("Please try again."));
+            s.stop(chalk_1.default.red(Output.error));
+            p.text({
+                message: chalk_1.default.red("Please try again."),
+            });
             p.outro(chalk_1.default.red("Account creation failed."));
             process.exit(0);
         }
