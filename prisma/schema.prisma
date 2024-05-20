@@ -14,12 +14,18 @@ datasource db {
   // directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
+enum UserRole {
+  ADMIN
+  VOLUNTEER
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String   @unique
   password      String
   emailVerified DateTime? @map("email_verified")
+  role         UserRole @default(VOLUNTEER)
   image         String?
   accounts      Account[]
   @@map("users")
